@@ -1,0 +1,12 @@
+# WebServer Plugin Konfiguration
+# Port auf dem der HTTP-Server lauscht
+port: 40020
+
+# Verzeichnis mit den statischen Dateien (relativ zum Plugin-Ordner)
+web-root: "html"
+
+# Standarddatei wenn nur ein Verzeichnis aufgerufen wird
+index-file: "index.html"
+
+# Access-Log in die Konsole schreiben?
+access-log: false

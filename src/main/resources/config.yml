@@ -1,0 +1,23 @@
+# WebServer Plugin Konfiguration
+# Port auf dem der HTTP-Server lauscht
+port: 40020
+
+# Verzeichnis mit den statischen Dateien (relativ zum Plugin-Ordner)
+web-root: "html"
+
+# Standarddatei wenn nur ein Verzeichnis aufgerufen wird
+index-file: "index.html"
+
+# Erlaubte MIME-Types und deren Dateiendungen werden automatisch erkannt.
+# Access-Log in die Konsole schreiben?
+access-log: false
+
+# Git-Repository URL (optional) - Wenn gesetzt, wird bei /webserver reload
+# automatisch ein "git pull" im web-root Verzeichnis ausgeführt.
+# Beim ersten Mal wird das Repo geclont, danach nur gepullt.
+# Leer lassen oder entfernen um die Funktion zu deaktivieren.
+git-repo: ""
+
+# Git-Branch (optional) - Wenn gesetzt, wird nur dieser Branch geklont.
+# Nützlich wenn z.B. ein separater Branch für gebaute Dateien genutzt wird.
+git-branch: ""
