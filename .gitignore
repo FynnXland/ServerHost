@@ -16,3 +16,4 @@ Thumbs.db
 
 # Website source (separate repo)
 website-src/
+deploy/
