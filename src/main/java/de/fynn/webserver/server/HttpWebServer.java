@@ -263,8 +263,8 @@ public class HttpWebServer {
         try {
             if ("OPTIONS".equalsIgnoreCase(method)) {
                 applyCorsHeaders(exchange);
-                exchange.sendResponseHeaders(204, -1);
-                return new ApiResult(true, 204, 0);
+                exchange.sendResponseHeaders(200, -1);
+                return new ApiResult(true, 200, 0);
             }
             if ("/api/stats".equals(path) && protectStatsWithApiKey && !isAuthorized(exchange)) {
                 applyCorsHeaders(exchange);
@@ -301,8 +301,8 @@ public class HttpWebServer {
         try {
             if ("OPTIONS".equalsIgnoreCase(method)) {
                 applyCorsHeaders(exchange);
-                exchange.sendResponseHeaders(204, -1);
-                return new ApiResult(true, 204, 0);
+                exchange.sendResponseHeaders(200, -1);
+                return new ApiResult(true, 200, 0);
             }
             if (!"GET".equalsIgnoreCase(method)) {
                 applyCorsHeaders(exchange);
@@ -327,8 +327,8 @@ public class HttpWebServer {
         try {
             applyCorsHeaders(exchange);
             if ("OPTIONS".equalsIgnoreCase(method)) {
-                exchange.sendResponseHeaders(204, -1);
-                return new ApiResult(true, 204, 0);
+                exchange.sendResponseHeaders(200, -1);
+                return new ApiResult(true, 200, 0);
             }
             if (!deployWebhookEnabled) {
                 long bytes = sendJson(exchange, 404, "{\"error\":\"Deploy webhook disabled\"}");
@@ -378,6 +378,7 @@ public class HttpWebServer {
         }
         exchange.getResponseHeaders().set("Access-Control-Allow-Methods", "GET, POST, OPTIONS");
         exchange.getResponseHeaders().set("Access-Control-Allow-Headers", "Content-Type, Accept, X-API-Key");
+        exchange.getResponseHeaders().set("Access-Control-Max-Age", "86400");
     }
 
     private long sendJson(HttpExchange exchange, int code, String body) throws IOException {
@@ -406,6 +407,14 @@ public class HttpWebServer {
                 if (!allowRequest(remoteIp)) {
                     bytesWritten = sendError(exchange, 429, "Too Many Requests");
                     statusCode = 429;
+                    return;
+                }
+
+                // Global CORS preflight: always allow OPTIONS without auth
+                if ("OPTIONS".equalsIgnoreCase(method)) {
+                    applyCorsHeaders(exchange);
+                    exchange.sendResponseHeaders(200, -1);
+                    statusCode = 200;
                     return;
                 }
 
