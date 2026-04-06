@@ -1,23 +1,141 @@
-# WebServer Plugin Konfiguration
-# Port auf dem der HTTP-Server lauscht
+# ╔══════════════════════════════════════════════════╗
+# ║          Serverhost – Konfiguration             ║
+# ║  Hilfe: /ws  |  Änderungen: /ws reload          ║
+# ╚══════════════════════════════════════════════════╝
+
+# ──────────────────────────────────────────────────
+# WEBSERVER
+# ──────────────────────────────────────────────────
+
+# Port, auf dem der Webserver lauscht.
+# Muss in deiner Server-Firewall / deinem Panel freigegeben sein.
 port: 40020
 
-# Verzeichnis mit den statischen Dateien (relativ zum Plugin-Ordner)
+# Ordner mit deinen Website-Dateien (relativ zum Plugin-Ordner).
+# Standard: plugins/Serverhost/html/
+# Lege index.html, CSS, JS usw. hier rein.
 web-root: "html"
 
-# Standarddatei wenn nur ein Verzeichnis aufgerufen wird
+# Datei, die bei direkten Verzeichnis-Aufrufen ausgeliefert wird.
 index-file: "index.html"
 
-# Erlaubte MIME-Types und deren Dateiendungen werden automatisch erkannt.
-# Access-Log in die Konsole schreiben?
+# Jeden HTTP-Zugriff in der Konsole protokollieren?
+# Empfehlung: false (erzeugt viel Output)
 access-log: false
 
-# Git-Repository URL (optional) - Wenn gesetzt, wird bei /webserver reload
-# automatisch ein "git pull" im web-root Verzeichnis ausgeführt.
-# Beim ersten Mal wird das Repo geclont, danach nur gepullt.
-# Leer lassen oder entfernen um die Funktion zu deaktivieren.
+# Wie viele Zugriffe werden für /ws log im Speicher gehalten?
+access-log-max-entries: 120
+
+# ──────────────────────────────────────────────────
+# SICHERHEIT
+# ──────────────────────────────────────────────────
+security:
+  # API-Key für den /api/stats Endpunkt.
+  # Das Frontend sendet diesen im Header: X-API-Key: <dein-key>
+  # Empfehlung: Einen langen zufälligen String wählen und NIRGENDWO öffentlich teilen.
+  api-key: "aj_stat_9xK2pM5vL8qR4wT7nC3jH6fB1mD0yZ5"
+
+  # GET /api/stats mit API-Key schützen?
+  protect-stats-with-api-key: true
+
+  # GET /api/stats/analytics mit API-Key schützen?
+  protect-analytics-with-api-key: false
+
+  # Rate-Limiting: Maximale Anfragen pro Sekunde je IP-Adresse.
+  rate-limit:
+    requests-per-second: 30
+    burst: 60
+
+# ──────────────────────────────────────────────────
+# GIT-INTEGRATION  (optional)
+# ──────────────────────────────────────────────────
+# Wenn gesetzt, wird bei /ws reload automatisch ein "git pull" im
+# web-root-Ordner ausgeführt. Beim ersten Mal wird das Repo geklont.
+# Leer lassen, um die Funktion zu deaktivieren.
+
+# HTTPS-URL mit Personal Access Token (GitHub):
+#   https://<TOKEN>@github.com/dein-user/dein-repo.git
 git-repo: ""
 
-# Git-Branch (optional) - Wenn gesetzt, wird nur dieser Branch geklont.
-# Nützlich wenn z.B. ein separater Branch für gebaute Dateien genutzt wird.
+# Nur diesen Branch klonen (z.B. "dist-deploy" für Build-Output).
+# Leer = Standard-Branch des Repos.
 git-branch: ""
+
+# Timeout für Git-Befehle in Sekunden.
+git-timeout-seconds: 30
+
+# ──────────────────────────────────────────────────
+# DEPLOY-WEBHOOK  (optional)
+# ──────────────────────────────────────────────────
+deploy:
+  # POST /api/deploy aktivieren?
+  # Löst automatisch git pull + Neustart aus, wenn aufgerufen.
+  # Erfordert X-API-Key Header (security.api-key).
+  webhook-enabled: false
+
+# ──────────────────────────────────────────────────
+# CORS
+# ──────────────────────────────────────────────────
+cors:
+  # Welche Domains dürfen die API aufrufen?
+  # "*" erlaubt alle (empfohlen für öffentliche Websites).
+  # Mehrere Domains kommagetrennt: "https://example.com,https://other.com"
+  allowed-origins: "*"
+
+# ──────────────────────────────────────────────────
+# PERFORMANCE
+# ──────────────────────────────────────────────────
+performance:
+  # Maximale Anzahl gleichzeitig gecachter Dateien (In-Memory).
+  file-cache-max-entries: 200
+
+  # Browser-Cache-Dauer für statische Dateien in Sekunden.
+  # 3600 = 1 Stunde | 0 = kein Caching
+  cache-max-age-seconds: 3600
+
+  # GZip-Kompression für Text-Dateien (HTML, CSS, JS, JSON)?
+  # Spart Bandbreite, empfohlen: true
+  gzip-enabled: true
+
+# ──────────────────────────────────────────────────
+# ANALYTICS & STATISTIKEN
+# ──────────────────────────────────────────────────
+analytics:
+  # Wie viele der letzten Requests werden für /ws log gespeichert?
+  recent-requests-limit: 50
+
+stats:
+  # Gesamte Festplattengröße des Servers in GB (für Prozentanzeige).
+  disk-total-gb: 50
+
+leaderboard:
+  # Kill-Statistiken pro Welt separat tracken?
+  # false = nur Gesamtzahl
+  track-worlds: true
+
+# ──────────────────────────────────────────────────
+# HTTPS / SSL  (optional, fortgeschritten)
+# ──────────────────────────────────────────────────
+ssl:
+  # HTTPS aktivieren? Benötigt einen gültigen Keystore.
+  enabled: false
+
+  # Pfad zum Keystore (absolut oder relativ zum Plugin-Ordner).
+  keystore-path: ""
+
+  # Passwort des Keystores.
+  keystore-password: ""
+
+  # Separates Passwort für den privaten Key (leer = keystore-password).
+  key-password: ""
+
+  # Keystore-Format: PKCS12 (empfohlen) oder JKS.
+  keystore-type: "PKCS12"
+
+# ──────────────────────────────────────────────────
+# DEBUG  (nur bei Problemen aktivieren)
+# ──────────────────────────────────────────────────
+# Ausführliche Fehler-Logs? Empfehlung: false
+# Kann auch zur Laufzeit mit /ws debug on/off geändert werden.
+debug-log: false
+

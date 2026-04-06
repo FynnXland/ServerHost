@@ -3,7 +3,7 @@ plugins {
 }
 
 group = 'de.fynn'
-version = '1.4.0'
+version = '4.0.1'
 
 java {
     sourceCompatibility = JavaVersion.VERSION_21
@@ -17,6 +17,10 @@ repositories {
 
 dependencies {
     compileOnly 'io.papermc.paper:paper-api:1.21.1-R0.1-SNAPSHOT'
+}
+
+tasks.withType(JavaCompile).configureEach {
+    options.warnings = false
 }
 
 jar {

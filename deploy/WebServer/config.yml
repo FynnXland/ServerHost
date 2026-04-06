@@ -1,0 +1,75 @@
+# ╔══════════════════════════════════════════════════╗
+# ║          Serverhost – Konfiguration             ║
+# ║  Hilfe: /ws  |  Änderungen: /ws reload          ║
+# ╚══════════════════════════════════════════════════╝
+
+# Port, auf dem der Webserver lauscht.
+port: 40020
+
+# Ordner mit deinen Website-Dateien (relativ zum Plugin-Ordner).
+web-root: "html"
+
+# Datei, die bei direkten Verzeichnis-Aufrufen ausgeliefert wird.
+index-file: "index.html"
+
+# Jeden HTTP-Zugriff in der Konsole protokollieren?
+access-log: false
+access-log-max-entries: 120
+
+# ── SICHERHEIT ──────────────────────────────────────
+security:
+  # API-Key für den /api/stats Endpunkt.
+  # Das Frontend sendet diesen im Header: X-API-Key: <dein-key>
+  api-key: "aj_stat_9xK2pM5vL8qR4wT7nC3jH6fB1mD0yZ5"
+
+  # GET /api/stats mit API-Key schützen?
+  protect-stats-with-api-key: true
+
+  # GET /api/stats/analytics mit API-Key schützen?
+  protect-analytics-with-api-key: false
+
+  # Rate-Limiting pro IP-Adresse.
+  rate-limit:
+    requests-per-second: 30
+    burst: 60
+
+# ── CORS ────────────────────────────────────────────
+cors:
+  # "*" erlaubt alle Domains.
+  allowed-origins: "*"
+
+# ── PERFORMANCE ─────────────────────────────────────
+performance:
+  file-cache-max-entries: 200
+  cache-max-age-seconds: 3600
+  gzip-enabled: true
+
+# ── ANALYTICS & STATISTIKEN ─────────────────────────
+analytics:
+  recent-requests-limit: 50
+
+stats:
+  disk-total-gb: 50
+
+leaderboard:
+  track-worlds: true
+
+# ── GIT-INTEGRATION (optional) ──────────────────────
+git-repo: ""
+git-branch: ""
+git-timeout-seconds: 30
+
+# ── DEPLOY-WEBHOOK (optional) ───────────────────────
+deploy:
+  webhook-enabled: false
+
+# ── HTTPS / SSL (optional) ──────────────────────────
+ssl:
+  enabled: false
+  keystore-path: ""
+  keystore-password: ""
+  key-password: ""
+  keystore-type: "PKCS12"
+
+# ── DEBUG ───────────────────────────────────────────
+debug-log: false

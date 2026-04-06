@@ -1,18 +1,19 @@
 name: Serverhost
-version: '1.4.0'
+version: '4.0.1'
 main: de.fynn.webserver.WebServerPlugin
 api-version: '1.21'
 folia-supported: false
-description: Leichtgewichtiger HTTP-Webserver fuer statische Dateien
+description: Leichtgewichtiger HTTP-Webserver mit Stats-API fuer Minecraft-Server
 authors: [Fynn]
 
 commands:
   webserver:
-    description: WebServer Verwaltung
-    usage: /<command> [reload|status]
+    description: Serverhost Verwaltung
+    usage: /<command> [status|reload|start|stop|info|gui|analytics|log|reset|debug|kills]
+    aliases: [ws]
     permission: webserver.admin
 
 permissions:
   webserver.admin:
-    description: Erlaubt die Verwaltung des Webservers
+    description: Erlaubt die Verwaltung des Serverhost-Plugins
     default: op

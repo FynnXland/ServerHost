@@ -1,0 +1,72 @@
+# WebServer Plugin Konfiguration
+# Port auf dem der HTTP-Server lauscht
+port: 40020
+
+# Verzeichnis mit den statischen Dateien (relativ zum Plugin-Ordner)
+web-root: "html"
+
+# Standarddatei wenn nur ein Verzeichnis aufgerufen wird
+index-file: "index.html"
+
+# Erlaubte MIME-Types und deren Dateiendungen werden automatisch erkannt.
+# Access-Log in die Konsole schreiben?
+access-log: false
+
+# Git-Repository URL (optional) - Wenn gesetzt, wird bei /webserver reload
+# automatisch ein "git pull" im web-root Verzeichnis ausgeführt.
+# Beim ersten Mal wird das Repo geclont, danach nur gepullt.
+# Leer lassen oder entfernen um die Funktion zu deaktivieren.
+git-repo: ""
+
+# Git-Branch (optional) - Wenn gesetzt, wird nur dieser Branch geklont.
+# Nützlich wenn z.B. ein separater Branch für gebaute Dateien genutzt wird.
+git-branch: ""
+
+# Debug-Logging für Request-Fehler und Stacktraces
+debug-log: false
+
+# Analytics-Einstellungen
+analytics:
+  # Anzahl letzter Requests, die für GUI/API gehalten werden
+  recent-requests-limit: 50
+
+# Runtime-Stats Einstellungen
+stats:
+  # Gesamt-Disk in GB für Prozent-/Gesamtanzeige (z.B. Pterodactyl-Limit)
+  disk-total-gb: 50
+
+# Sicherheitsoptionen
+security:
+  # Optionaler API-Key für sensitive Endpunkte (Header: X-API-Key)
+  api-key: ""
+  # /api/stats und /api/stats/runtime schützen
+  protect-stats-with-api-key: true
+  # /api/stats/analytics schützen
+  protect-analytics-with-api-key: false
+  rate-limit:
+    # Refill pro Sekunde je IP
+    requests-per-second: 30
+    # Burst-Kapazität je IP
+    burst: 60
+
+# Performance-Einstellungen
+performance:
+  # Max. Dateieinträge im In-Memory-Cache
+  file-cache-max-entries: 200
+
+# Deploy/Webhook
+deploy:
+  # Aktiviert POST /api/deploy (benötigt X-API-Key)
+  webhook-enabled: false
+
+# Optionaler HTTPS-Modus (für Mixed-Content-freie API-Aufrufe)
+ssl:
+  enabled: false
+  # Absoluter Pfad oder relativ zum Plugin-Ordner
+  keystore-path: ""
+  # Passwort für den Keystore
+  keystore-password: ""
+  # Optional separates Passwort für den privaten Key (leer = keystore-password)
+  key-password: ""
+  # PKCS12 oder JKS
+  keystore-type: "PKCS12"
