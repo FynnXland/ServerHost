@@ -1,5 +1,5 @@
 name: Serverhost
-version: '4.0.1'
+version: '4.0.2'
 main: de.fynn.webserver.WebServerPlugin
 api-version: '1.21'
 folia-supported: false
